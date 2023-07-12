@@ -1,0 +1,43 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+PortSystem	        1.0
+PortGroup	        cmake 1.0
+PortGroup	        github 1.0
+
+name	            createrepo_c
+description	        C implementation of the createrepo.
+long_description    {*}${description}
+version         	0.21.1
+revision	        0
+
+categories	        sysutils
+license	            GPL-2.0
+homepage            http://rpm-software-management.github.io/createrepo_c
+
+github.setup	    rpm-software-management createrepo_c 0.21.1
+
+platforms	        darwin
+
+maintainers	        @NattyNarwhal
+
+checksums           rmd160  d9fc39add2fc955407bf070dc736e18f93aaa601 \
+                    sha256  1f1707b8f1d62816bf680dff2b3b2aff0fd5a9cb9198069ce27b5beff104e3cb \
+                    size    626124
+
+patchfiles          fix-darwin-includes.patch
+
+# XXX: Hardcoded Python 3?
+depends_build-append	port:cmake \
+                        port:drpm \
+			            port:rpm \
+			            port:curl \
+			            port:glib2 \
+			            port:openssl \
+			            port:libmagic \
+			            port:libxml2 \
+			            port:zstd \
+			            port:bzip2 \
+			            port:zchunk \
+                        port:xz \
+                        port:zlib \
+                        port:python311 \
+                        port:sqlite3

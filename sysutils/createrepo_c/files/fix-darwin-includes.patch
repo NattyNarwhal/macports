@@ -1,0 +1,11 @@
+--- src/misc.c.orig
++++ src/misc.c
+@@ -17,8 +17,6 @@
+  * USA.
+  */
+ 
+-#define _XOPEN_SOURCE 500
+-
+ #include <glib/gstdio.h>
+ #include <glib.h>
+ #include <gio/gio.h>
