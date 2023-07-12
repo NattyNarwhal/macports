@@ -1,0 +1,24 @@
+--- src/drpm_block.c.orig
++++ src/drpm_block.c
+@@ -22,7 +22,9 @@
+ #include "drpm.h"
+ #include "drpm_private.h"
+ 
++#ifndef __APPLE__
+ #include <sys/sysmacros.h>
++#endif
+ 
+ #include <stdint.h>
+ #include <stdbool.h>
+--- src/drpm_make.c.orig
++++ src/drpm_make.c
+@@ -22,7 +22,9 @@
+ #include "drpm.h"
+ #include "drpm_private.h"
+ 
++#ifndef __APPLE__
+ #include <sys/sysmacros.h>
++#endif
+ 
+ #include <stdio.h>
+ #include <stdint.h>

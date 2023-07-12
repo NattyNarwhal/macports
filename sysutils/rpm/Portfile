@@ -1,0 +1,109 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+PortGroup           lua 1.0
+
+name                rpm
+version             4.18.1
+revision            0
+perl5.branches      5.34
+platforms           darwin freebsd linux
+license             GPL-2 LGPL-2
+categories          sysutils archivers
+maintainers         nomaintainer
+conflicts           rpm54
+description         The RPM package management system.
+long_description    The RPM Package Manager (RPM) is a powerful command line driven \
+                    package management system capable of installing, uninstalling, \
+                    verifying, querying, and updating software packages. Each software \
+                    package consists of an archive of files along with information about \
+                    the package like its version, a description, etc.
+
+homepage            https://rpm.org
+master_sites        http://ftp.rpm.org/releases/rpm-4.18.x/
+use_bzip2           yes
+checksums           rmd160  c03dd30528492337a9021ef82ffb78d90a93a68d \
+                    sha256  37f3b42c0966941e2ad3f10fde3639824a6591d07197ba8fd0869ca0779e1f56
+
+# XXX: Is perl still a build dependency? Is python a build *and* runtime dep?
+depends_build       port:perl${perl5.major}
+
+depends_lib         port:libgcrypt \
+                    port:gettext \
+                    port:libiconv \
+                    port:popt \
+                    port:libmagic \
+                    port:xz \
+                    port:bzip2 \
+                    port:gzip \
+                    port:libarchive \
+                    port:sqlite3 \
+                    port:python311
+
+depends_run         bin:bzip2:bzip2 \
+                    bin:gzip:gzip \
+                    bin:unzip:unzip
+
+build.type          gnu
+
+configure.args      --disable-nls \
+                    --infodir=${prefix}/share/info \
+                    --mandir=${prefix}/share/man \
+                    --sysconfdir=${prefix}/etc \
+                    --localstatedir=${prefix}/var \
+                    --with-libintl-prefix=${prefix} \
+                    --with-libiconv-prefix=${prefix} \
+                    --with-perl=${perl5.major} \
+                    --enable-python \
+                    --with-crypto=libgcrypt \
+                    --with-archive \
+
+
+configure.env       __PERL=${perl5.bin} \
+                    __PYTHON=${prefix}/bin/python3.11
+                    
+
+            # needed because it checks for sqlite3_open in sqlite lib...
+configure.env-append \
+                    ac_cv_lib_sqlite_sqlite3_open=yes
+
+patchfiles          fix-clang-decl.patch \
+                    fix-darwin-includes.patch
+
+post-destroot {
+    # MacPorts specific changes
+    xinstall -d -m 755 ${prefix}/etc/rpm
+
+    # where the RPM database lives
+    destroot.keepdirs \
+        ${destroot}${prefix}/etc/rpm\
+        ${destroot}${prefix}/var/lib/rpm\
+        ${destroot}${prefix}/var/spool/repackage\
+        ${destroot}${prefix}/src/macports/BUILD\
+        ${destroot}${prefix}/src/macports/RPMS\
+        ${destroot}${prefix}/src/macports/SOURCES\
+        ${destroot}${prefix}/src/macports/SPECS\
+        ${destroot}${prefix}/src/macports/SRPMS
+}
+
+platform darwin {
+    configure.args-append \
+                    --disable-rpath
+}
+
+platform freebsd {
+    post-configure {
+        reinplace "s;-lrt;;" ${worksrcpath}/lua/Makefile
+    }
+
+    post-destroot {
+        # FreeBSD specific changes
+        reinplace "s;/usr/bin/tar;/usr/local/bin/gtar;" ${destroot}${prefix}/lib/rpm/macros
+        reinplace "s;/usr/bin/make;/usr/local/bin/gmake;" ${destroot}${prefix}/lib/rpm/macros
+    }
+}
+
+livecheck.type      regex
+livecheck.url       ${homepage}/download.html
+livecheck.regex     "${name}-(\\d+(?:\\.\\d+)+)"

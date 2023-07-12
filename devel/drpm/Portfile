@@ -1,0 +1,40 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+PortSystem	        1.0
+PortGroup	        cmake 1.0
+PortGroup	        github 1.0
+
+name	            drpm
+description	        A library for making, reading and applying deltarpm packages
+long_description    {*}${description}
+version         	0.5.2
+revision	        0
+
+categories	        devel
+license	            BSD-2-Clause
+homepage            https://github.com/rpm-software-management/drpm
+
+github.setup	    rpm-software-management drpm 0.5.2
+github.tarball_from releases
+use_bzip2           yes
+
+platforms	        darwin
+
+maintainers	        @NattyNarwhal
+
+checksums           rmd160  d2a24f4634f9b2b335aeb8797ee42c65501a26be \
+                    sha256  9968707816908bbc8d9e70207a10413addca1b67225b527b04756c5767aad74e \
+                    size    124464
+
+patchfiles          fix-darwin-includes.patch
+
+depends_build-append	port:cmake \
+                        port:cmocka \
+			            port:openssl \
+			            port:rpm \
+			            port:zstd \
+			            port:bzip2 \
+			            port:popt \
+                        port:xz
+
+# Workaround for missing major/minor macros
+configure.cflags-append -D_DARWIN_C_SOURCE
