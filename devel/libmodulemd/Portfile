@@ -4,7 +4,7 @@ PortGroup	        meson 1.0
 PortGroup	        github 1.0
 
 name	            libmodulemd
-description	        A file format designed for highly efficient deltas while maintaining good compression
+description	        C Library for manipulating module metadata files 
 long_description    {*}${description}
 version         	2.5.10
 revision	        0
