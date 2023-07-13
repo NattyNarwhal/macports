@@ -1,29 +1,28 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-PortSystem            1.0
-PortGroup            meson 1.0
-PortGroup            github 1.0
+
+PortSystem          1.0
+PortGroup           meson 1.0
+PortGroup           github 1.0
 
 name                zchunk
-description            A file format designed for highly efficient deltas while maintaining good compression
+description         A file format designed for highly efficient deltas while maintaining good compression
 long_description    {*}${description}
 version             1.3.1
 revision            0
 
-categories            archivers
-license                BSD-2-Clause
+categories          archivers
+license             BSD-2-Clause
 homepage            https://github.com/zchunk/zchunk
 
 github.setup        zchunk zchunk 1.3.1
-platforms            darwin
+platforms           darwin
 
-maintainers            @NattyNarwhal
+maintainers         @NattyNarwhal
 
 checksums           rmd160  84968e6a72e5e1cf318d0115df81be24d679cc18 \
                     sha256  e4cdb1f997fbd55358c5e1eb13cabc1e3c2e420e4e67ba4a48e8cdf28fad7ace \
                     size    1508697
 
-depends_build-append    port:meson \
-                        port:ninja \
-                        port:zstd \
+depends_build-append    port:zstd \
                         port:openssl \
                         port:argp-standalone

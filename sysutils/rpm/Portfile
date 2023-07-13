@@ -24,7 +24,8 @@ homepage            https://rpm.org
 master_sites        http://ftp.rpm.org/releases/rpm-4.18.x/
 use_bzip2           yes
 checksums           rmd160  c03dd30528492337a9021ef82ffb78d90a93a68d \
-                    sha256  37f3b42c0966941e2ad3f10fde3639824a6591d07197ba8fd0869ca0779e1f56
+                    sha256  37f3b42c0966941e2ad3f10fde3639824a6591d07197ba8fd0869ca0779e1f56 \
+                    size    6396363
 
 # XXX: Is perl still a build dependency? Is python a build *and* runtime dep?
 depends_build       port:perl${perl5.major}
