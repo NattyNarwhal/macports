@@ -7,7 +7,7 @@ PortGroup           github 1.0
 name                libmodulemd
 description         C Library for manipulating module metadata files
 long_description    {*}${description}
-version             2.5.10
+version             2.15.0
 revision            0
 
 categories          devel
@@ -27,13 +27,18 @@ checksums           rmd160  db6a7f22100c158fafc33bb7bc1d7b4e73a23699 \
                     sha256  15458323d1d1f614f9e706f623794f95d23e59f4c37deeaa16877463aee34af5 \
                     size    321088
 
+# XXX: Python bindings disabled due to following error; I don't need it myself, but should fix it
+# :info:configure bindings/python/meson.build:11:6: ERROR: Problem encountered: Failed to determine Python 3 pygobject overridedir: Traceback (most recent call last):
+# :info:configure   File "<string>", line 1, in <module>
+# :info:configure     import gi; print(gi._overridesdir)
+# :info:configure                      ^^^^^^^^^^^^^^^^
+# :info:configure AttributeError: module 'gi' has no attribute '_overridesdir'
 # XXX: add gtk-doc if building with docs
-# XXX: Hardcoded python?
-depends_build-append    port:python311 \
-                        port:py311-gobject3 \
-                        port:glib2 \
+depends_build-append    port:glib2 \
                         port:gobject-introspection \
                         port:libyaml \
                         port:rpm
 
-configure.args-append   -Dwith_docs=false
+configure.args-append   -Dwith_docs=false \
+                        -Dwith_py3=false \
+                        -Dwith_py2=false
