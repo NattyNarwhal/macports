@@ -6,7 +6,7 @@ PortGroup           lua 1.0
 
 name                rpm
 version             4.18.1
-revision            0
+revision            1
 perl5.branches      5.34
 platforms           darwin freebsd linux
 license             GPL-2 LGPL-2
@@ -40,7 +40,7 @@ depends_lib         port:libgcrypt \
                     port:gzip \
                     port:libarchive \
                     port:sqlite3 \
-                    port:python311
+                    port:python314
 
 depends_run         bin:bzip2:bzip2 \
                     bin:gzip:gzip \
@@ -62,7 +62,7 @@ configure.args      --disable-nls \
 
 
 configure.env       __PERL=${perl5.bin} \
-                    __PYTHON=${prefix}/bin/python3.11
+                    __PYTHON=${prefix}/bin/python3.14
                     
 
             # needed because it checks for sqlite3_open in sqlite lib...
