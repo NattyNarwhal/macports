@@ -7,25 +7,27 @@ PortGroup           github 1.0
 name                createrepo_c
 description         C implementation of the createrepo.
 long_description    {*}${description}
-version             1.2.2
-revision            0
+version             1.2.4
+revision            2
 
 categories          sysutils
 license             GPL-2.0
 homepage            http://rpm-software-management.github.io/createrepo_c
 
 github.tarball_from archive
-github.setup        rpm-software-management createrepo_c 1.2.2
+github.setup        rpm-software-management createrepo_c ${version}
 
 platforms           darwin
 
 maintainers         @NattyNarwhal
 
-checksums           rmd160  ac0c5ca1c8df32e1270d4fc1c71ac60c36f24f32 \
-                    sha256  cab615d4731fe91b5d8ca9a56ccee561e7864b36c082d1b43af6a772ce5b444f \
-                    size    638827
+checksums           rmd160  eb510418af0a889c6022ede1d5d61804adb81179 \
+                    sha256  4c980c2b5938694d36ab3117eb286b9ffa7187c768ac66e7805662a3dd22edf1 \
+                    size    639165
 
-# XXX: Hardcoded Python 3?
+# XXX: Disable Python bindings; needs more work, I don't use them
+configure.args-append   -DENABLE_PYTHON=NO
+
 depends_build-append    port:cmake \
                         port:doxygen \
                         port:drpm \
@@ -41,5 +43,4 @@ depends_build-append    port:cmake \
                         port:zchunk \
                         port:xz \
                         port:zlib \
-                        port:python311 \
                         port:sqlite3
