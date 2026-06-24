@@ -1,0 +1,60 @@
+--- detok/Makefile
++++ detok/Makefile
+@@ -24,7 +24,7 @@
+ 
+ PROGRAM = detok
+ 
+-DESTDIR = /usr/local
++prefix ?= /usr/local
+ CC      ?= gcc
+ STRIP	= strip
+ INCLUDES = -I../shared
+@@ -65,5 +65,5 @@ clean:
+ 	$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@ 
+ 
+ install:
+-	mkdir -p $(DESTDIR)/bin
+-	cp $(PROGRAM) $(DESTDIR)/bin/$(PROGRAM)
++	mkdir -p $(DESTDIR)/$(prefix)/bin
++	cp $(PROGRAM) $(DESTDIR)/$(prefix)/bin/$(PROGRAM)
+--- romheaders/Makefile
++++ romheaders/Makefile
+@@ -24,7 +24,7 @@
+ 
+ PROGRAM = romheaders
+ 
+-DESTDIR  = /usr/local
++prefix  ?= /usr/local
+ CC	 ?= gcc
+ STRIP    = strip
+ CFLAGS   = -O2 -Wall -Wextra
+@@ -45,5 +45,5 @@ clean:
+ 	rm -f $(PROGRAM)
+ 
+ install:
+-	mkdir -p $(DESTDIR)/bin
+-	cp $(PROGRAM) $(DESTDIR)/bin/$(PROGRAM)
++	mkdir -p $(DESTDIR)/$(prefix)/bin
++	cp $(PROGRAM) $(DESTDIR)/$(prefix)/bin/$(PROGRAM)
+--- toke/Makefile
++++ toke/Makefile
+@@ -24,7 +24,7 @@
+ 
+ PROGRAM = toke
+ 
+-DESTDIR = /usr/local
++prefix ?= /usr/local
+ CC      ?= gcc
+ STRIP	= strip
+ INCLUDES = -I../shared
+@@ -75,5 +75,5 @@ documentation:: *.c *.h toke.doxygen
+ 	$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@ 
+ 
+ install:
+-	mkdir -p $(DESTDIR)/bin
+-	cp $(PROGRAM) $(DESTDIR)/bin/$(PROGRAM)
++	mkdir -p $(DESTDIR)/$(prefix)/bin
++	cp $(PROGRAM) $(DESTDIR)/$(prefix)/bin/$(PROGRAM)
+-- 
+2.54.0
+
