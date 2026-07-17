@@ -1,0 +1,58 @@
+PortSystem          1.0
+
+name                sqliteodbc
+version             0.99991
+revision            0
+categories          databases
+maintainers         @NattyNarwhal
+license             LicenseRef-Callaway-BSD
+
+description         SQLite ODBC Driver
+long_description    SQLite ODBC Driver
+
+homepage            http://www.ch-werner.de/sqliteodbc
+master_sites        http://www.ch-werner.de/sqliteodbc/
+
+checksums           rmd160  b27a1b5cf82f00d554f75ce31a2d3e888b2be038 \
+                    sha256  4d94adb8d3cde1fa94a28aeb0dfcc7be73145bcdfcdf3d5e225434db31dc8a5c \
+                    size    1002929
+
+# XXX: Driver manager neutrality?
+depends_run         port:unixODBC
+
+patchfiles          sqliteodbc-0.99991-Fix-too-many-args-to-gpps-compilation-error.patch \
+                    sqliteodbc-0.99991-Fix-incompatible-pointer-compilation-error.patch
+
+# Build system crimes begin here
+depends_build-append    port:zlib \
+                        port:libxml2 \
+                        port:sqlite3 \
+                        port:unixODBC
+
+# Don't autoreconf, the build system is a horror show, just update config.guess
+# use_autoreconf          yes
+#autoreconf.args         -fiv .
+
+platform darwin arm {
+    depends_build-append    port:automake
+
+    post-patch {
+        # Use newer config.guess and config.sub to support Apple Silicon.
+        set automake_dirs [glob -directory ${prefix}/share automake-*]
+        set automake_dir [lindex [lsort -command vercmp $automake_dirs] end]
+        copy -force ${automake_dir}/config.guess ${automake_dir}/config.sub \
+            ${worksrcpath}
+    }
+}
+
+configure.args-append   --with-sqlite3=${prefix} --with-odbc=${prefix} --with-libxml2=${prefix}/bin/xml2-config
+
+# XXX: Make an example one
+# post-activate {
+#     system "odbcinst -u -d -n \"SQLite3\""
+#     system "odbcinst -i -d -f odbcinst.ini"
+# }
+# 
+# pre-deactivate {
+#     system "odbcinst -u -d -n \"SQLite3\""
+# }
